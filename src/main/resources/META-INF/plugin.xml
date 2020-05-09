@@ -1,11 +1,10 @@
 <idea-plugin>
-    <id>org.example.XRouter-Navigator</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>com.mrcd.xrouter.navigator</id>
+    <name>XRouter-Navigator</name>
+    <vendor email="xuxingchen2016@gmail.com" url="https://github.com/SevenNight2012">NewsDog</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    This is a plugin for Android Library XRouter, navigate to the activity which linked with router!
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -14,9 +13,18 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <!-- Add your extensions here -->
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.mrcd.xrouter.nav.LineMarker" />
+        <!-- Add your extensions here -->
+        <codeInsight.lineMarkerProvider language="kotlin"
+                                        implementationClass="com.mrcd.xrouter.nav.LineMarker" />
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
     </actions>
+
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>com.intellij.modules.java</depends>
 </idea-plugin>
