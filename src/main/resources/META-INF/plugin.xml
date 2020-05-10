@@ -7,6 +7,9 @@
     This is a plugin for Android Library XRouter, navigate to the activity which linked with router!
     ]]></description>
 
+    <!-- Minimum and maximum build of IDE compatible with the plugin -->
+    <idea-version since-build="192" until-build="201.*"/>
+
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
