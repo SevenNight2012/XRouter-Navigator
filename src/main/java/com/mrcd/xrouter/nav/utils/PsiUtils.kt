@@ -1,14 +1,20 @@
 package com.mrcd.xrouter.nav.utils
 
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.psi.*
 import org.jetbrains.kotlin.asJava.LightClassUtil.getLightClassMethod
 import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
 import org.jetbrains.kotlin.nj2k.postProcessing.resolve
-import org.jetbrains.kotlin.psi.KtNameReferenceExpression
-import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.*
 import java.util.regex.Pattern
 
 object PsiUtils {
+
+    const val NAVIGATION_FULL_NAME = "com.mrcd.xrouter.annotation.Navigation"
+    private const val PATH_FULL_NAME = "com.mrcd.xrouter.annotation.XPath"
+    const val NAVIGATION_TAG = "@Navigation"
+    private const val XPATH_TAG = "@XPath"
+
 
     @JvmStatic
     fun getClass(psiType: PsiType?, ele: PsiElement): PsiClass? {
@@ -35,9 +41,61 @@ object PsiUtils {
         if (Pattern.matches(".*Router().*\\.launch()", fullName)) {
             val dotIndex = fullName.lastIndexOf(".")
             className = fullName.substring(0, dotIndex)
-            println(className)
+            LogUtils.d(className)
         }
         return className
+    }
+
+    @JvmStatic
+    fun isXPathAnnotation(element: PsiElement): Boolean {
+        if (element is PsiClass) {
+            return element.annotations.any { it.qualifiedName == PATH_FULL_NAME }
+        }
+        if (element is KtObjectDeclaration) {
+            val psiElement = element.node.psi
+            if (psiElement is KtObjectDeclaration) {
+                LogUtils.d("obj dec: ${psiElement.fullName}")
+                return hasXCoreAnnotation(psiElement.annotationEntries)
+            }
+        }
+        if (element is KtNamedDeclaration) {
+            val nodePsi = element.node.psi
+            var fullName: String? = null
+            var annotations: List<KtAnnotationEntry>? = null
+            if (nodePsi is KtClass) {
+                fullName = nodePsi.fullName
+                annotations = nodePsi.annotationEntries
+                LogUtils.d("class  $fullName")
+            }
+//            else if (nodePsi is KtNamedFunction) {
+//                //此处获取方法上的注解，暂时无用
+//                fullName = nodePsi.fullName
+//                annotations = nodePsi.annotationEntries
+//                println("method  $fullName")
+//            }
+            return annotations?.let { hasXCoreAnnotation(it) } ?: return false
+        }
+        return false
+    }
+
+    private fun hasXCoreAnnotation(annotations: List<KtAnnotationEntry>): Boolean {
+        return annotations.any { it.text == XPATH_TAG }
+    }
+
+    /**
+     * version info api
+     * 暂未使用
+     */
+    @JvmStatic
+    fun versionInfo() {
+        val buildInfo = ApplicationInfo.getInstance().build
+        println("${buildInfo.baselineVersion}  ${buildInfo.productCode}")
+        buildInfo.components.forEach {
+            println("component: $it")
+        }
+        val majorVersion = ApplicationInfo.getInstance().majorVersion
+        val minorVersion = ApplicationInfo.getInstance().minorVersion
+        println("major version: $majorVersion  minor version: $minorVersion")
     }
 
 }

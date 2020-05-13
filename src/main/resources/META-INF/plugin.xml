@@ -8,7 +8,7 @@
     ]]></description>
 
     <!-- Minimum and maximum build of IDE compatible with the plugin -->
-    <idea-version since-build="192" until-build="201.*"/>
+    <idea-version since-build="192" until-build="*.*"/>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
