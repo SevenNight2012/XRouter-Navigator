@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.search.JavaFilesSearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
@@ -52,7 +53,12 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
         Project project = element.getProject();
 
         if (PsiUtils.isXPathAnnotation(element)) {
-            return new LineMarkerInfo<>(element, element.getTextRange(), ICON_NAV, psiElement -> "Show invoker", this, Alignment.CENTER);
+            String text = element.getText();
+            TextRange textRange = element.getTextRange();
+            int pathIndex = text.indexOf("@XPath");
+            //这是注解开始的地方，需要传入这个TextRange才能把图标正确定位到对应的行
+            TextRange annotationTextRange = TextRange.create(textRange.getStartOffset() + pathIndex, textRange.getEndOffset());
+            return new LineMarkerInfo<>(element, annotationTextRange, ICON_NAV, psiElement -> "Show invoker", this, Alignment.CENTER);
         }
         return createLauncherInvokeMarker(element, project);
     }
@@ -126,6 +132,8 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
             }
             mRouterCache.put(elementName, routerMethod);
             showUsage(event, element, project, routerMethod);
+        } else {
+            SimpleUtils.showPopup(project, event, "Error", "Not found @Navigation,please update XRouter");
         }
     }
 
