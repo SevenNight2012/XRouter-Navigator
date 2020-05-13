@@ -29,7 +29,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      1.0.3: Release version!
+      1.0.3: Release version!Add readme.md~
       <br/>
       1.0.2-SNAPSHOT:Bug fix,adapte the location of nagivation icon when the java file has head doc!
       <br/>
