@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.mrcd'
-version '1.0.1-SNAPSHOT'
+version '1.0.2-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,11 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      You can look for where the activity launched!
+      1.0.2-SNAPSHOT:Bug fix,adapte the location of nagivation icon when the java file has head doc!
+      <br/>
+      Add error hint,when XRouter version is too low(no @Nagivation annotation found) 
+      <br/>
+      1.0.1-SNAPSHOT:You can look for where the activity launched!
       """
     sinceBuild "192"
     untilBuild "201.*"
