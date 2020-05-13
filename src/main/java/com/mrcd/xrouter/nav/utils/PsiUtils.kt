@@ -55,7 +55,7 @@ object PsiUtils {
             val psiElement = element.node.psi
             if (psiElement is KtObjectDeclaration) {
                 LogUtils.d("obj dec: ${psiElement.fullName}")
-                return hasXCoreAnnotation(psiElement.annotationEntries)
+                return hasNavigationAnnotation(psiElement.annotationEntries)
             }
         }
         if (element is KtNamedDeclaration) {
@@ -73,12 +73,12 @@ object PsiUtils {
 //                annotations = nodePsi.annotationEntries
 //                println("method  $fullName")
 //            }
-            return annotations?.let { hasXCoreAnnotation(it) } ?: return false
+            return annotations?.let { hasNavigationAnnotation(it) } ?: return false
         }
         return false
     }
 
-    private fun hasXCoreAnnotation(annotations: List<KtAnnotationEntry>): Boolean {
+    private fun hasNavigationAnnotation(annotations: List<KtAnnotationEntry>): Boolean {
         return annotations.any { it.text == XPATH_TAG }
     }
 

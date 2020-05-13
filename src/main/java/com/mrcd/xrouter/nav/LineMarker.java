@@ -43,12 +43,8 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
     private final Icon ICON_NAV = IconLoader.getIcon("/icons/nav.svg");
     private final int MY_HINT_FLAG = HIDE_BY_ANY_KEY | HIDE_BY_TEXT_CHANGE | HIDE_BY_SCROLLING;
 
-    //缓存容量为256
-    LRUCache mRouterCache = new LRUCache(1 << 8);
-
-    public LineMarker() {
-        System.err.println("调用构造器");
-    }
+    //缓存容量为16
+    LRUCache mRouterCache = new LRUCache(1 << 4);
 
     @Override
     public @Nullable
@@ -107,15 +103,20 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
             SimpleUtils.showPopup(project, event, "Error", "Element name is empty");
             return;
         }
+        PsiMethod method = (PsiMethod) mRouterCache.get(elementName);
+        if (method != null) {
+            showUsage(event, element, project, method);
+            return;
+        }
 
         PsiClass coreAnnotation = SimpleUtils.findClassInGlobalProject(PsiUtils.NAVIGATION_FULL_NAME, project);
         if (coreAnnotation != null) {
-            //查找XCore的使用
+            //查找Navigation的使用
             Query<PsiReference> psiReferences = ReferencesSearch.search(coreAnnotation, new JavaFilesSearchScope(project), false);
             //找出搜寻结果中所有的class对象
             List<PsiClass> classes = findClassWithAnnotation(psiReferences);
             if (CollectionUtils.isEmpty(classes)) {
-                SimpleUtils.showPopup(project, event, "Error", "No class annotated @XCore");
+                SimpleUtils.showPopup(project, event, "Error", "No class annotated @Navigation");
                 return;
             }
             PsiMethod routerMethod = findRouterMethod(project, elementName, classes);
@@ -123,21 +124,26 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
                 SimpleUtils.showPopup(project, event, "Error", "No method found with return type is " + elementName);
                 return;
             }
-            RelativePoint position = new RelativePoint(event);
-            Editor editor = PsiUtilBase.findEditor(element);
-            //notice 此处有版本兼容问题，此方法将从2020.3版本以后的IDE中移除
-            if (SimpleUtils.findSearchInLowApi(routerMethod, event, element)) {
-                try {
-                    ShowUsagesAction.startFindUsages(routerMethod, position, editor);
-                } catch (Throwable throwable) {
-                    SimpleUtils.showPopup(project, event, "Error", "Api error!");
-                }
+            mRouterCache.put(elementName, routerMethod);
+            showUsage(event, element, project, routerMethod);
+        }
+    }
+
+    private void showUsage(MouseEvent event, PsiElement element, Project project, PsiMethod routerMethod) {
+        RelativePoint position = new RelativePoint(event);
+        Editor editor = PsiUtilBase.findEditor(element);
+        //notice 此处有版本兼容问题，此方法将从2020.3版本以后的IDE中移除
+        if (SimpleUtils.findSearchInLowApi(routerMethod, event, element)) {
+            try {
+                ShowUsagesAction.startFindUsages(routerMethod, position, editor);
+            } catch (Throwable throwable) {
+                SimpleUtils.showPopup(project, event, "Error", "Api error!");
             }
         }
     }
 
     /**
-     * 从被 @XCore 注解的类里面查找对应activity启动的方法
+     * 从被 @Navigation 注解的类里面查找对应activity启动的方法
      * 即：XRouter.getInstance().mainActivity().set... 要找到mainActivity()此方法，获取它的返回值类型，然后匹配
      *
      * @param project     Project对象
@@ -181,7 +187,7 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
     }
 
     /**
-     * 查找被XCore注解的class，注意此处未兼容kotlin
+     * 查找被Navigation注解的class，注意此处未兼容kotlin
      *
      * @param psiReferences psiReference对象
      * @return 被注解的class集合
