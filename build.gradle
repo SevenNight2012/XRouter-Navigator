@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.mrcd'
-version '1.0.0-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -28,10 +28,10 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      Plugin create!
+      You can look for where the activity launched!
       """
     sinceBuild "192"
-    untilBuild "*.*"
+    untilBuild "201.*"
 }
 println "My publish token: ${System.getenv("intellijPublishToken")}"
 publishPlugin {
