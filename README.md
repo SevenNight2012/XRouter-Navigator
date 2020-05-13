@@ -10,7 +10,9 @@
 所以在开发过程中，无法做到随点随跳，影响搬砖体验，所以开发AS级的插件，在不侵入代码的情况下，
 增强调用处与Activity的关联。
 2. 从调用处跳转到对应Activity，使用:  
-![image](media/navigation_launch.gif)
+<video id="video" controls="" preload="none">
+      <source id="mp4" src="https://youtu.be/8WPIngWW7zw" type="video/mp4">
+</video>
 3. 从Activity索引调用处，使用：
 ![索引调用](media/show_invoker.gif)
 
