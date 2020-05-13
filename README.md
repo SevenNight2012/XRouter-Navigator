@@ -9,7 +9,7 @@
 由于XRouter框架对Activity没有强关联性，只在每个Router类中声明了activity的全路径，
 所以在开发过程中，无法做到随点随跳，影响搬砖体验，所以开发AS级的插件，在不侵入代码的情况下，
 增强调用处与Activity的关联。
-2. 演示地址[url](https://youtu.be/8WPIngWW7zw)
+2. [演示地址](https://youtu.be/qiOljgyzS9s)
 
 
 
