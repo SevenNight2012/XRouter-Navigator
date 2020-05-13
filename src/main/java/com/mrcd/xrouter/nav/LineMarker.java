@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.intellij.codeInsight.hint.HintManager.*;
+import static com.mrcd.xrouter.nav.utils.PsiUtils.XPATH_TAG;
 
 /**
  * 入口类
@@ -55,7 +56,7 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
         if (PsiUtils.isXPathAnnotation(element)) {
             String text = element.getText();
             TextRange textRange = element.getTextRange();
-            int pathIndex = text.indexOf("@XPath");
+            int pathIndex = text.indexOf(XPATH_TAG);
             //这是注解开始的地方，需要传入这个TextRange才能把图标正确定位到对应的行
             TextRange annotationTextRange = TextRange.create(textRange.getStartOffset() + pathIndex, textRange.getEndOffset());
             return new LineMarkerInfo<>(element, annotationTextRange, ICON_NAV, psiElement -> "Show invoker", this, Alignment.CENTER);

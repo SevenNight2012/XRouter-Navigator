@@ -13,7 +13,7 @@ object PsiUtils {
     const val NAVIGATION_FULL_NAME = "com.mrcd.xrouter.annotation.Navigation"
     private const val PATH_FULL_NAME = "com.mrcd.xrouter.annotation.XPath"
     const val NAVIGATION_TAG = "@Navigation"
-    private const val XPATH_TAG = "@XPath"
+    const val XPATH_TAG = "@XPath"
 
 
     @JvmStatic
