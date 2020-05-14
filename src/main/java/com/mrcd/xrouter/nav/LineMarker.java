@@ -16,6 +16,7 @@ import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.Query;
+import com.mrcd.xrouter.nav.notification.SimpleNotification;
 import com.mrcd.xrouter.nav.utils.LogUtils;
 import com.mrcd.xrouter.nav.utils.PsiUtils;
 import com.mrcd.xrouter.nav.utils.SimpleUtils;
@@ -147,6 +148,8 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
                 ShowUsagesAction.startFindUsages(routerMethod, position, editor);
             } catch (Throwable throwable) {
                 SimpleUtils.showPopup(project, event, "Error", "Api error!");
+                SimpleNotification notification = new SimpleNotification();
+                notification.showError(throwable, project);
             }
         }
     }
