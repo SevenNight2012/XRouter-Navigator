@@ -10,6 +10,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.popup.list.ListPopupImpl;
+import com.mrcd.xrouter.nav.notification.SimpleNotification;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.MouseEvent;
@@ -82,6 +83,8 @@ public class SimpleUtils {
             action.startFindUsages(routerMethod, new RelativePoint(event), PsiUtilBase.findEditor(elementRoot), 100);
             return false;
         } catch (Throwable throwable) {
+            SimpleNotification notification = new SimpleNotification();
+            notification.showError(throwable, elementRoot.getProject());
             return true;
         }
     }
