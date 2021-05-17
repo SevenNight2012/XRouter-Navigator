@@ -31,7 +31,6 @@ import org.jetbrains.kotlin.psi.KtClassOrObject;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -229,11 +228,4 @@ public class LineMarker implements LineMarkerProvider, GutterIconNavigationHandl
             return getMasterClass(context);
         }
     }
-
-
-    @Override
-    public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
-
-    }
-
 }

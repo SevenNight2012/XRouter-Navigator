@@ -6,10 +6,20 @@ plugins {
 
 group 'com.mrcd'
 //version '1.0.2-SNAPSHOT'
-version '1.0.4'
+version '1.0.5'
+
+Properties localConfig = new Properties()
+localConfig.load(project.rootProject.file('local.properties').newDataInputStream())
 
 repositories {
     mavenCentral()
+    maven {
+        url localConfig.getProperty("nexus.mavenCentral")
+        credentials {
+            username localConfig.getProperty("nexus.username")
+            password localConfig.getProperty("nexus.pwd")
+        }
+    }
 }
 
 dependencies {
@@ -24,11 +34,13 @@ def pluginsDependencies = ['java',
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
 //    version '2019.2.4'
-    version '2020.1.1'
+    version '2020.2.3'
     setPlugins(*pluginsDependencies)
 }
 patchPluginXml {
     changeNotes """
+      1.0.5:Compat idea build 202+
+      <br/>
       1.0.3: Release version!Add readme.md~
       <br/>
       1.0.2-SNAPSHOT:Bug fix,adapte the location of nagivation icon when the java file has head doc!
@@ -38,7 +50,7 @@ patchPluginXml {
       1.0.1-SNAPSHOT:You can look for where the activity launched!
       """
     sinceBuild "192"
-    untilBuild "201.*"
+    untilBuild "202.*"
 }
 println "My publish token: ${System.getenv("intellijPublishToken")}"
 publishPlugin {
