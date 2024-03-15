@@ -6,7 +6,7 @@ plugins {
 
 group 'com.mrcd'
 //version '1.0.2-SNAPSHOT'
-version '1.0.7'
+version '1.0.8'
 
 Properties localConfig = new Properties()
 localConfig.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -39,6 +39,8 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+      1.0.8:Compat idea build 232+
+      <br/>
       1.0.7:Compat idea build 221+
       <br/>
       1.0.6:Compat idea build 203+
@@ -54,7 +56,7 @@ patchPluginXml {
       1.0.1-SNAPSHOT:You can look for where the activity launched!
       """
     sinceBuild "192"
-    untilBuild "221.*"
+    untilBuild "232.*"
 }
 println "My publish token: ${System.getenv("intellijPublishToken")}"
 publishPlugin {
